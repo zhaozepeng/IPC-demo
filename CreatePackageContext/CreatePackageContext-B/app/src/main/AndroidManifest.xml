@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.zzp.createpackagecontext_">
+    package="com.example.zzp.createpackagecontextB"
+    android:sharedUserId="com.android.test">
 
     <application
         android:allowBackup="true"

@@ -67,7 +67,7 @@ public class Server extends BaseActivity implements View.OnClickListener{
             context = createPackageContext("com.android.shareduserid_b", CONTEXT_INCLUDE_CODE|CONTEXT_IGNORE_SECURITY);
             tv_context.setText(context.toString());
         } catch (PackageManager.NameNotFoundException e) {
-            tv_context.setText("context 为空");
+            tv_context.setText("context为空");
             L.e(e);
             e.printStackTrace();
         }

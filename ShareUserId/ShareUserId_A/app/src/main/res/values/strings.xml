@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ShareUserId_A</string>
     <string name="share_label">this sharedUserId is for test</string>
+    <string name="share_string">i\'m from AAAAA application</string>
 </resources>

@@ -1,4 +1,4 @@
-<manifest package="com.android.shareuserid_a"
+<manifest package="com.android.shareduserid_a"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:sharedUserId="com.android.test"
     android:sharedUserLabel="@string/share_label">
@@ -8,6 +8,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+        <activity android:name="com.android.shareuserid_a.Server">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
     </application>
 

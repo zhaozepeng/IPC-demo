@@ -1,11 +1,17 @@
 apply plugin: 'com.android.application'
 
+repositories {
+    flatDir {
+        dirs 'aars'
+    }
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        applicationId "com.android.shareuserid_b"
+        applicationId "com.android.shareduserid_b"
         minSdkVersion 8
         targetSdkVersion 23
         versionCode 1
@@ -23,4 +29,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
+    compile(name: 'libcore-release', ext:'aar')
+    compile(name: 'libcore-ui-release', ext:'aar')
 }

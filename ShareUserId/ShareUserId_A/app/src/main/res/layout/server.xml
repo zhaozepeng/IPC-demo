@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_context"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_pic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显示client图片"/>
+
+    <ImageView
+        android:id="@+id/iv_pic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_string"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="显示string字串"/>
+
+    <TextView
+        android:id="@+id/tv_string"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_method"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="执行加法操作"/>
+
+    <TextView
+        android:id="@+id/tv_sum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_open"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="打开B应用并存入sharedPreference"/>
+
+    <Button
+        android:id="@+id/btn_get_preference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取sharedPreference"/>
+
+    <TextView
+        android:id="@+id/tv_shared_preference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

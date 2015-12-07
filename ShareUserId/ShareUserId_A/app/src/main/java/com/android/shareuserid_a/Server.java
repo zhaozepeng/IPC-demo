@@ -83,7 +83,8 @@ public class Server extends BaseActivity implements View.OnClickListener{
         switch (v.getId()){
             case R.id.btn_pic:
                 //获取b应用图片
-                iv_pic.setImageDrawable(ContextCompat.getDrawable(context, R.mipmap.share));
+                int id = context.getResources().getIdentifier("share", "mipmap", "com.android.shareduserid_b");
+                iv_pic.setImageDrawable(ContextCompat.getDrawable(context, id));
                 break;
             case R.id.btn_string:
                 tv_string.setText(context.getString(R.string.share_string));

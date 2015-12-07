@@ -47,7 +47,7 @@
         android:id="@+id/btn_open"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="打开B应用并存入sharedPreference"/>
+        android:text="打开B应用并存入sharedPreference和DB"/>
 
     <Button
         android:id="@+id/btn_get_preference"
@@ -57,6 +57,17 @@
 
     <TextView
         android:id="@+id/tv_shared_preference"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_DB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="获取DB"/>
+
+    <TextView
+        android:id="@+id/tv_DB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

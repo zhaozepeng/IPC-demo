@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -16,8 +18,6 @@ import android.widget.TextView;
 import com.android.libcore.log.L;
 import com.android.libcore_ui.activity.BaseActivity;
 import com.android.shareduserid_a.R;
-
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Description: 服务器端
@@ -37,6 +37,8 @@ public class Server extends BaseActivity implements View.OnClickListener{
     private TextView tv_sum;
     private Button btn_get_preference;
     private TextView tv_shared_preference;
+    private Button btn_DB;
+    private TextView tv_DB;
 
     private Context context;
 
@@ -59,6 +61,9 @@ public class Server extends BaseActivity implements View.OnClickListener{
         btn_get_preference = (Button) findViewById(R.id.btn_get_preference);
         btn_get_preference.setOnClickListener(this);
         tv_shared_preference = (TextView) findViewById(R.id.tv_shared_preference);
+        btn_DB = (Button) findViewById(R.id.btn_DB);
+        btn_DB.setOnClickListener(this);
+        tv_DB = (TextView) findViewById(R.id.tv_DB);
         getContext();
     }
 
@@ -107,6 +112,17 @@ public class Server extends BaseActivity implements View.OnClickListener{
                 SharedPreferences sharedPreferences = context.getSharedPreferences("permanent", MODE_MULTI_PROCESS);
                 String time = sharedPreferences.getString("time", "get time error");
                 tv_shared_preference.setText(time);
+                break;
+            case R.id.btn_DB:
+                String DBPath = context.getDatabasePath("permanentCache.db").getAbsolutePath();
+                L.i(DBPath);
+
+                SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openDatabase(DBPath, null, SQLiteDatabase.OPEN_READONLY);
+                Cursor cursor = sqLiteDatabase.query("cache_1", null, "key=?", new String[]{"time"}, null, null, null, null);
+                cursor.moveToNext();
+                tv_DB.setText(cursor.getString(1));
+                cursor.close();
+                sqLiteDatabase.close();
                 break;
         }
     }

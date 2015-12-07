@@ -87,7 +87,8 @@ public class Server extends BaseActivity implements View.OnClickListener{
                 iv_pic.setImageDrawable(ContextCompat.getDrawable(context, id));
                 break;
             case R.id.btn_string:
-                tv_string.setText(context.getString(R.string.share_string));
+                id = context.getResources().getIdentifier("share_string", "string", "com.android.shareduserid_b");
+                tv_string.setText(context.getString(id));
                 break;
             case R.id.btn_open:
                 ComponentName componentName = new ComponentName("com.android.shareduserid_b",

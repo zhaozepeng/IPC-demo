@@ -102,7 +102,7 @@ public class ClientForHandler extends BaseActivity implements View.OnClickListen
                     return;
                 }
                 Intent intent = new Intent();
-                intent.setClassName("com.android.messenger_a", "com.android.messenger_a.ClientForHandler");
+                intent.setClassName("com.android.messenger_a", "com.android.messenger_a.ServerWithHandler");
                 bindService(intent, serviceConnection, BIND_AUTO_CREATE);
                 break;
             case R.id.connect_binder:

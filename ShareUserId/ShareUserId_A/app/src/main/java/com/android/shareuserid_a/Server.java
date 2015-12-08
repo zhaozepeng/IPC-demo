@@ -91,12 +91,15 @@ public class Server extends BaseActivity implements View.OnClickListener{
                 tv_string.setText(context.getString(id));
                 break;
             case R.id.btn_open:
+                Intent intent = new Intent();
                 ComponentName componentName = new ComponentName("com.android.shareduserid_b",
                         "com.android.shareuserid_b.Client");
-                Intent intent = new Intent();
                 intent.setComponent(componentName);
+                //intent.setClassName(context, "com.android.shareuserid_b.Client");
+                //intent.setClassName("com.android.shareduserid_b",
+                //        "com.android.shareuserid_b.Client");
                 startActivity(intent);
-                break;
+                                break;
             case R.id.btn_method:
                 try {
                     Class clazz = context.getClassLoader().loadClass("com.android.shareuserid_b.Method");

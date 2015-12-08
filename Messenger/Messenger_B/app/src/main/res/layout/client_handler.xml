@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/connect_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="连接handler service"/>
+    <TextView
+        android:id="@+id/tv_handler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/connect_binder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="binder service"/>
+    <TextView
+        android:id="@+id/tv_binder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

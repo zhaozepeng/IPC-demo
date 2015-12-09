@@ -67,8 +67,8 @@ public class ClientForBinder extends BaseActivity implements View.OnClickListene
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (serverMessenger != null)
             unbindService(serviceConnection);
+        super.onDestroy();
     }
 }

@@ -124,8 +124,8 @@ public class ClientForHandler extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (serverMessenger != null)
             unbindService(serviceConnection);
+        super.onDestroy();
     }
 }

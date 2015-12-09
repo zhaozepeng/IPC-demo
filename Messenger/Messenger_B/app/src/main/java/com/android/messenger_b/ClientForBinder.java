@@ -36,6 +36,7 @@ public class ClientForBinder extends BaseActivity implements View.OnClickListene
                 try {
                     mBoundService = service;
                     Class clazz = mBoundService.getClass();
+                    //如果两个应用程序没有运行在同一个进程中，则无法反射到该函数
                     Method method = clazz.getDeclaredMethod("getServer");
                     Object object = method.invoke(mBoundService);
                     Class messenger = object.getClass();

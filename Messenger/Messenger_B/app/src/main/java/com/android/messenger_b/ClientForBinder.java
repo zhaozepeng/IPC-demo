@@ -23,6 +23,7 @@ import java.lang.reflect.Method;
 public class ClientForBinder extends BaseActivity implements View.OnClickListener{
     private ServiceConnection serviceConnection;
     private Messenger serverMessenger;
+    private IBinder mBoundService;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +34,13 @@ public class ClientForBinder extends BaseActivity implements View.OnClickListene
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 try {
-                    Class clazz = service.getClass();
-                    Method method = clazz.getMethod("getServer", null);
-                    serverMessenger = (Messenger) method.invoke(service, null);
-                    Class messenger = serverMessenger.getClass();
-                    Method add = messenger.getMethod("add", int[].class);
-                    L.e("1+2+3=" + add.invoke(serverMessenger, new int[]{1,2,3}));
+                    mBoundService = service;
+                    Class clazz = mBoundService.getClass();
+                    Method method = clazz.getDeclaredMethod("getServer");
+                    Object object = method.invoke(mBoundService);
+                    Class messenger = object.getClass();
+                    Method add = messenger.getDeclaredMethod("add", int[].class);
+                    L.e("1+2+3=" + add.invoke(object, new int[]{1,2,3}));
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
@@ -60,5 +62,12 @@ public class ClientForBinder extends BaseActivity implements View.OnClickListene
         Intent intent = new Intent();
         intent.setClassName("com.android.messenger_a", "com.android.messenger_a.ServerWithBinder");
         bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (serverMessenger != null)
+            unbindService(serviceConnection);
     }
 }

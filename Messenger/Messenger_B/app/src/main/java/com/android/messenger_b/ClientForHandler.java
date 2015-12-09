@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.libcore.log.L;
 import com.android.libcore_ui.activity.BaseActivity;
 
 import java.text.SimpleDateFormat;
@@ -33,6 +34,8 @@ public class ClientForHandler extends BaseActivity implements View.OnClickListen
     private ServiceConnection serviceConnection;
     private Messenger serverMessenger;
     private Messenger messenger;
+
+    private boolean hasBindService = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,10 +64,12 @@ public class ClientForHandler extends BaseActivity implements View.OnClickListen
         messenger = new Messenger(new Handler(){
             @Override
             public void handleMessage(Message msg) {
+                L.i("i have received '" + msg.getData().getString("message") + "'");
                 Message message = Message.obtain();
                 Bundle bundle = new Bundle();
                 bundle.putString("message", "OK, bye bye~");
                 message.setData(bundle);
+                L.i("i have send '" + message.getData().getString("message") + "'");
                 message.what = 2;
                 if (serverMessenger != null){
                     try {
@@ -83,6 +88,7 @@ public class ClientForHandler extends BaseActivity implements View.OnClickListen
         Bundle msg = new Bundle();
         msg.putString("message", "i have send handler a message at " + simpleDateFormat.format(System.currentTimeMillis()));
         message.setData(msg);
+        L.i("i have send '" + message.getData().getString("message") + "'");
         message.what = 1;
         message.replyTo = messenger;
         if (serverMessenger != null){
@@ -98,12 +104,17 @@ public class ClientForHandler extends BaseActivity implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.connect_handler:
-                if (serverMessenger != null){
-                    return;
+                if (!hasBindService) {
+                    Intent intent = new Intent();
+                    intent.setClassName("com.android.messenger_a", "com.android.messenger_a.ServerWithHandler");
+                    bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+                    hasBindService = true;
+                }else{
+                    if (serverMessenger == null){
+                        return;
+                    }
+                    communicate();
                 }
-                Intent intent = new Intent();
-                intent.setClassName("com.android.messenger_a", "com.android.messenger_a.ServerWithHandler");
-                bindService(intent, serviceConnection, BIND_AUTO_CREATE);
                 break;
             case R.id.connect_binder:
                 startActivity(new Intent(this, ClientForBinder.class));
@@ -114,6 +125,7 @@ public class ClientForHandler extends BaseActivity implements View.OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(serviceConnection);
+        if (serverMessenger != null)
+            unbindService(serviceConnection);
     }
 }

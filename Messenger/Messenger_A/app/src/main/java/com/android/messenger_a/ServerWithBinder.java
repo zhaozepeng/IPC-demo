@@ -12,9 +12,9 @@ import android.os.IBinder;
  * @since 2015-12-08
  */
 public class ServerWithBinder extends Service{
-    private InnerBinder binder;
+    private final InnerBinder binder = new InnerBinder();
 
-    private class InnerBinder extends Binder {
+    public class InnerBinder extends Binder {
         public ServerWithBinder getServer(){
             return ServerWithBinder.this;
         }
@@ -30,13 +30,12 @@ public class ServerWithBinder extends Service{
 
     @Override
     public IBinder onBind(Intent intent) {
-        return new InnerBinder();
+        return binder;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        binder = new InnerBinder();
     }
 
     @Override

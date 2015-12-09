@@ -25,7 +25,7 @@ public class ServerWithHandler extends Service{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 1:
-                    L.i("i receive" + msg.getData().getString("message"));
+                    L.i("i receive '" + msg.getData().getString("message")+"'");
                     Messenger client = msg.replyTo;
 
                     //回应客户端
@@ -43,7 +43,7 @@ public class ServerWithHandler extends Service{
                     }
                     break;
                 case 2:
-                    L.i("i receive" + msg.getData().getString("message"));
+                    L.i("i receive '" + msg.getData().getString("message")+"'");
                     L.i("client has disconnect this connection, bye~");
                     break;
                 default:

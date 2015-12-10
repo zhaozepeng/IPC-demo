@@ -1,8 +1,4 @@
-*.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
-.DS_Store
-/build
-/captures
+Messenger/Messenger_B/.idea/misc.xml
+Messenger/Messenger_B/.idea/encodings.xml
+Messenger/Messenger_B/.idea/misc.xml
+Messenger/Messenger_B/.idea/gradle.xml

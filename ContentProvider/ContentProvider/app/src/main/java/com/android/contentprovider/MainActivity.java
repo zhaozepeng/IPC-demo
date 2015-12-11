@@ -24,8 +24,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_mainactivity);
         findViewById(R.id.btn_query).setOnClickListener(this);
-        studentUri = Uri.parse("content://com.android.StudentProvider/student");
-        gradeUri = Uri.parse("content://com.android.StudentProvider/grade");
+        studentUri = StudentProvider.STUDENT_CONTENT_URI;
+        gradeUri = StudentProvider.GRADE_CONTENT_URI;
 
         ContentValues studentValues = new ContentValues();
         studentValues.put("id", 1);

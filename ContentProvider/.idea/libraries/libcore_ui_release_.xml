@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="libcore-ui-release-">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/libcore-ui-release/res" />
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/libcore-ui-release/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

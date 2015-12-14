@@ -19,8 +19,17 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'aars'
+    }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
+    //    导入的aar包在https://github.com/zhaozepeng/Android_framework
+    compile(name: 'libcore-release', ext:'aar')
+    compile(name: 'libcore-ui-release', ext:'aar')
 }

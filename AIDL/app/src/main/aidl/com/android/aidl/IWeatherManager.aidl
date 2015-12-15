@@ -1,8 +1,8 @@
 // IWeatherManager.aidl
 package com.android.aidl;
-import com.android.aidl.Weather;
 
 // Declare any non-default types here with import statements
+import com.android.aidl.Weather;
 
 interface IWeatherManager {
     List<Weather> getWeather();

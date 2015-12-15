@@ -65,7 +65,16 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
                 e.printStackTrace();
             }
         }else if (v.getId() == R.id.btn_add){
-
+            Weather weather = new Weather();
+            weather.weather = Weather.AllWeather.cloudy;
+            weather.humidity = 25.5;
+            weather.temperature = 19.5;
+            weather.cityName = "罗湖";
+            try {
+                weatherManager.addWeather(weather);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -63,7 +63,7 @@ public class WeatherManagerService extends Service{
                 IWeatherChangeListener listener = listeners.getBroadcastItem(i);
                 listener.onWeatherChange(weather);
             }
-            L.i("server notify the listener that weathers have been changed");
+            L.i("server has notified the listener that weathers have been changed");
             listeners.finishBroadcast();
         }
 

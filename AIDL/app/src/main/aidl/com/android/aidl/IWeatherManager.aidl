@@ -3,7 +3,7 @@ package com.android.aidl;
 
 // Declare any non-default types here with import statements
 import com.android.aidl.Weather;
-import com.android.aidl.IWeatherChangeListener;
+import com.android.aidl.listener.IWeatherChangeListener;
 
 interface IWeatherManager {
     List<Weather> getWeather();

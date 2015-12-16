@@ -9,6 +9,7 @@ import android.os.Parcel;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 
+import com.android.aidl.listener.IWeatherChangeListener;
 import com.android.libcore.log.L;
 
 import java.util.List;
@@ -103,6 +104,12 @@ public class WeatherManagerService extends Service{
 
     @Override
     public IBinder onBind(Intent intent) {
+//        int permission = checkCallingPermission("com.android.permission.WRITEWEATHERPERMISSION");
+//        //检测客户端是否声明权限
+//        if (permission == PackageManager.PERMISSION_DENIED){
+//            L.e("permission denied");
+//            return null;
+//        }
         return mBinder;
     }
 }

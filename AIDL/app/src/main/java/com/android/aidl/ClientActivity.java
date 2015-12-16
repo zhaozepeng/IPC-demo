@@ -10,6 +10,7 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.aidl.listener.IWeatherChangeListener;
 import com.android.libcore.log.L;
 import com.android.libcore_ui.activity.BaseActivity;
 
@@ -24,6 +25,7 @@ import java.util.List;
 public class ClientActivity extends BaseActivity implements View.OnClickListener{
 
     private ServiceConnection serviceConnection = null;
+    private IBinder.DeathRecipient deathRecipient = null;
     private IWeatherChangeListener listener = null;
     private IWeatherManager weatherManager;
     private TextView tv_content;
@@ -51,6 +53,7 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
             public void onServiceConnected(ComponentName name, IBinder service) {
                 weatherManager = IWeatherManager.Stub.asInterface(service);
                 try {
+                    weatherManager.asBinder().linkToDeath(deathRecipient, 0);
                     weatherManager.addListener(listener);
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -62,6 +65,22 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
                 weatherManager = null;
             }
         };
+
+        deathRecipient = new IBinder.DeathRecipient() {
+            @Override
+            public void binderDied() {
+                //移出之前的死亡容器
+                weatherManager.asBinder().unlinkToDeath(deathRecipient, 0);
+                weatherManager = null;
+
+                //重新连接
+                bindServer();
+            }
+        };
+        bindServer();
+    }
+
+    private void bindServer(){
         Intent intent = new Intent(this, WeatherManagerService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -112,5 +131,10 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
     protected void onDestroy() {
         super.onDestroy();
         unbindService(serviceConnection);
+        try {
+            weatherManager.asBinder().linkToDeath(deathRecipient, 0);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

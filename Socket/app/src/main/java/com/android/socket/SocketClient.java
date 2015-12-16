@@ -83,6 +83,8 @@ public class SocketClient extends BaseActivity implements OnClickListener{
                 e.printStackTrace();
             }
         }
+        Intent service = new Intent(this, SocketServer.class);
+        stopService(service);
         super.onDestroy();
     }
 

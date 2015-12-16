@@ -10,6 +10,7 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.TextView;
 
+import com.android.libcore.log.L;
 import com.android.libcore_ui.activity.BaseActivity;
 
 import java.util.List;
@@ -23,8 +24,10 @@ import java.util.List;
 public class ClientActivity extends BaseActivity implements View.OnClickListener{
 
     private ServiceConnection serviceConnection = null;
+    private IWeatherChangeListener listener = null;
     private IWeatherManager weatherManager;
     private TextView tv_content;
+    private TextView tv_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +35,26 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_client);
         findViewById(R.id.btn_add).setOnClickListener(this);
         findViewById(R.id.btn_query).setOnClickListener(this);
+        findViewById(R.id.btn_remove_listener).setOnClickListener(this);
         tv_content = (TextView) findViewById(R.id.tv_content);
+        tv_add = (TextView) findViewById(R.id.tv_add);
+        listener = new IWeatherChangeListener.Stub(){
+
+            @Override
+            public void onWeatherChange(Weather newWeather) throws RemoteException {
+                L.i("client has been notified that "+newWeather.cityName+" has been added");
+                tv_add.setText(newWeather.cityName + "has been added");
+            }
+        };
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
                 weatherManager = IWeatherManager.Stub.asInterface(service);
+                try {
+                    weatherManager.addListener(listener);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -52,7 +70,10 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
     public void onClick(View v) {
         if (v.getId() == R.id.btn_query){
             try {
+                //调用远程服务端接口时，客户端进程会挂起，勿在主线程中调用耗时远程操作
+                L.i("client is getting weather");
                 List<Weather> weathers = weatherManager.getWeather();
+                L.i("client has gotten weather");
                 StringBuilder sb = new StringBuilder();
                 for (Weather weather : weathers){
                     sb.append(weather.cityName).append("\n");
@@ -71,7 +92,16 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
             weather.temperature = 19.5;
             weather.cityName = "罗湖";
             try {
+                //调用远程服务端接口时，客户端进程会挂起，勿在主线程中调用耗时远程操作
+                L.i("client is adding weather " + weather.cityName);
                 weatherManager.addWeather(weather);
+                L.i("client has added weather " + weather.cityName);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }else if (v.getId() == R.id.btn_remove_listener){
+            try {
+                weatherManager.removeListener(listener);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

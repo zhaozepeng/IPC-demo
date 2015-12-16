@@ -1,6 +1,6 @@
 <manifest package="com.android.aidl"
           xmlns:android="http://schemas.android.com/apk/res/android">
-    
+
     <permission android:name="com.android.permission.WRITEWEATHERPERMISSION"
         android:protectionLevel="signature"/>
 
@@ -13,8 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <service android:name=".WeatherManagerService"
-            android:process=":weather"
-            android:permission="com.android.permission.WRITEWEATHERPERMISSION"/>
+            android:process=":weather"/>
         <activity android:name=".ClientActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

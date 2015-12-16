@@ -10,6 +10,17 @@
         android:layout_height="wrap_content"
         android:text="添加罗湖天气"/>
 
+    <TextView
+        android:id="@+id/tv_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_remove_listener"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="去除监听器"/>
+
     <Button
         android:id="@+id/btn_query"
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package com.android.aidl;
+package com.android.binderpool;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,26 +10,23 @@ import android.os.RemoteException;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.aidl.listener.IWeatherChangeListener;
-import com.android.libcore.log.L;
+import com.android.libcore.Toast.T;
 import com.android.libcore_ui.activity.BaseActivity;
 
 import java.util.List;
 
 /**
- * Description: #TODO
- *
  * @author zzp(zhao_zepeng@hotmail.com)
- * @since 2015-12-15
+ * @since 2015-12-17
  */
-public class ClientActivity extends BaseActivity implements View.OnClickListener{
+public class Client extends BaseActivity implements View.OnClickListener{
 
     private ServiceConnection serviceConnection = null;
     private IBinder.DeathRecipient deathRecipient = null;
-    private IWeatherChangeListener listener = null;
+    private IBinderPoolManager binderPoolManager;
     private IWeatherManager weatherManager;
+    private IComputerManager computerManager;
     private TextView tv_content;
-    private TextView tv_add;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,24 +34,18 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_client);
         findViewById(R.id.btn_add).setOnClickListener(this);
         findViewById(R.id.btn_query).setOnClickListener(this);
-        findViewById(R.id.btn_remove_listener).setOnClickListener(this);
+        findViewById(R.id.btn_average).setOnClickListener(this);
         tv_content = (TextView) findViewById(R.id.tv_content);
-        tv_add = (TextView) findViewById(R.id.tv_add);
-        listener = new IWeatherChangeListener.Stub(){
-
-            @Override
-            public void onWeatherChange(Weather newWeather) throws RemoteException {
-                L.i("client has been notified that "+newWeather.cityName+" has been added");
-                tv_add.setText(newWeather.cityName + "has been added");
-            }
-        };
         serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                weatherManager = IWeatherManager.Stub.asInterface(service);
                 try {
-                    weatherManager.asBinder().linkToDeath(deathRecipient, 0);
-                    weatherManager.addListener(listener);
+                    binderPoolManager = IBinderPoolManager.Stub.asInterface(service);
+                    binderPoolManager.asBinder().linkToDeath(deathRecipient, 0);
+                    weatherManager = IWeatherManager.Stub.asInterface(
+                            binderPoolManager.queryCode(BinderPoolService.CODE_WEATHER));
+                    computerManager = IComputerManager.Stub.asInterface(
+                            binderPoolManager.queryCode(BinderPoolService.CODE_COMPUTER));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -62,7 +53,7 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                weatherManager = null;
+                binderPoolManager = null;
             }
         };
 
@@ -70,8 +61,8 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void binderDied() {
                 //移出之前的死亡容器
-                weatherManager.asBinder().unlinkToDeath(deathRecipient, 0);
-                weatherManager = null;
+                binderPoolManager.asBinder().unlinkToDeath(deathRecipient, 0);
+                binderPoolManager = null;
 
                 //重新连接
                 bindServer();
@@ -81,7 +72,7 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void bindServer(){
-        Intent intent = new Intent(this, WeatherManagerService.class);
+        Intent intent = new Intent(this, BinderPoolService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
@@ -90,15 +81,13 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
         if (v.getId() == R.id.btn_query){
             try {
                 //调用远程服务端接口时，客户端进程会挂起，勿在主线程中调用耗时远程操作
-                L.i("client is getting weather");
                 List<Weather> weathers = weatherManager.getWeather();
-                L.i("client has gotten weather");
                 StringBuilder sb = new StringBuilder();
                 for (Weather weather : weathers){
                     sb.append(weather.cityName).append("\n");
                     sb.append("humidity:").append(weather.humidity)
-                        .append("temperature").append(weather.temperature)
-                        .append("weather").append(weather.weather).append("\n");
+                            .append("temperature").append(weather.temperature)
+                            .append("weather").append(weather.weather).append("\n");
                 }
                 tv_content.setText(sb);
             } catch (RemoteException e) {
@@ -112,15 +101,13 @@ public class ClientActivity extends BaseActivity implements View.OnClickListener
             weather.cityName = "罗湖";
             try {
                 //调用远程服务端接口时，客户端进程会挂起，勿在主线程中调用耗时远程操作
-                L.i("client is adding weather " + weather.cityName);
                 weatherManager.addWeather(weather);
-                L.i("client has added weather " + weather.cityName);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-        }else if (v.getId() == R.id.btn_remove_listener){
+        }else if (v.getId() == R.id.btn_average){
             try {
-                weatherManager.removeListener(listener);
+                T.getInstance().showLong(computerManager.computeAverageTemperature(weatherManager.getWeather())+"");
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

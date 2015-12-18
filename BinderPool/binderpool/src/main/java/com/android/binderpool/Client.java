@@ -118,6 +118,6 @@ public class Client extends BaseActivity implements View.OnClickListener{
     protected void onDestroy() {
         super.onDestroy();
         unbindService(serviceConnection);
-        weatherManager.asBinder().unlinkToDeath(deathRecipient, 0);
+        binderPoolManager.asBinder().unlinkToDeath(deathRecipient, 0);
     }
 }
